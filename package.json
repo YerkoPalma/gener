@@ -1,0 +1,29 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "Personal blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard --verbose | snazzy",
+    "start": "budo index.js:bundle.js --port 8080 --host 0.0.0.0",
+    "build": "node scripts/build-html && node scripts/build-post && node scripts/build && node scripts/build-tags"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "domify": "^1.4.0",
+    "handlebars": "^4.0.6",
+    "html-minifier": "^3.2.3",
+    "marked": "^0.3.6",
+    "pify": "^2.3.0",
+    "pupa": "^1.0.0",
+    "run-series": "^1.1.4",
+    "singleton-router": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.3.0",
+    "budo": "^9.4.5",
+    "standard": "^8.6.0"
+  }
+}
