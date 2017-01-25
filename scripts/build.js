@@ -16,7 +16,7 @@ for (var prop in postsClone) {
   } else {
     var defaults = {
       slug: '/' + prop.split('.')[0],
-      featuredImage: 'http://placehold.it/350x150',
+      featuredImage: 'http://placehold.it/550x150',
       featuredImageDescription: ''
     }
     postArray.push(Object.assign(defaults, JSON.parse(postsClone[prop])))
