@@ -1,8 +1,9 @@
 {
-  "name": "blog",
+  "name": "gener",
   "version": "1.0.0",
-  "description": "Personal blog",
+  "description": "Simple static site generator",
   "main": "index.js",
+  "repository": "YerkoPalma/gener",
   "scripts": {
     "test": "standard --verbose | snazzy",
     "start": "budo index.js:bundle.js --port 8080 --host 0.0.0.0",
@@ -14,15 +15,13 @@
   "dependencies": {
     "domify": "^1.4.0",
     "handlebars": "^4.0.6",
-    "html-minifier": "^3.2.3",
+    "html-minifier": "^3.3.0",
     "marked": "^0.3.6",
-    "pify": "^2.3.0",
     "pupa": "^1.0.0",
-    "run-series": "^1.1.4",
-    "singleton-router": "^1.1.0"
+    "singleton-router": "^1.2.0"
   },
   "devDependencies": {
-    "browserify": "^13.3.0",
+    "browserify": "^14.0.0",
     "budo": "^9.4.5",
     "standard": "^8.6.0"
   }
