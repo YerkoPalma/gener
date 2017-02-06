@@ -1,17 +1,25 @@
-<article>
-  <header class="bg-gold sans-serif">
-    <div class="mw9 center pa4 pt5-ns ph7-l">
-      <time class="f6 mb2 dib ttu tracked"><small>{{formatDate date}}</small></time>
-      <h3 class="f2 f1-m f-headline-l measure-narrow lh-title mv0">
-        <span class="bg-black-90 lh-copy white pa1 tracked-tight">
-          {{title}}
-        </span>
-      </h3>
-      <h4 class="f3 fw1 georgia i">{{subtitle}}</h4>
-      <h5 class="f6 ttu tracked black-80">By {{author.name}}</h5>
-    </div>
-  </header>
-  <div class="pa4 ph7-l georgia mw9-l center">
-    {{{content}}}
+<div class="mw9 center ph3-ns">
+  <div class="ph2-ns flex flex-row flex-wrap justify-center">    
+    <article class="w-90 w-two-thirds-l w-75-ns ">
+      <div class="mt4 w-100 db flex flex-row flex-wrap">
+        <div class="tc dib ml2">
+          <img src="http://tachyons.io/img/logo.jpg" class="br-100 pa1 ba b--black-10 h3 w3" alt="avatar">
+        </div>
+        <div class="tl ml3 dib">
+          <p class="mb1 mt2 f6 
+light-silver v-mid">
+            <a class="link gray" href="#">{{author.name}}</a></p>
+          <p class="fw1 mb1 mt0 f6 
+light-silver v-mid">Freelance web developer</p>
+          <p class="fw1 mb2 mt0 f6 
+light-silver v-mid">{{formatDate date}}</p>
+        </div>
+      </div>
+      {{{content}}}
+      <div class="w-100 flex flex-row flex-wrap justify-start content-between">
+        <a href="" class="link bg-black-05 pa2 black-60 hover-bg-moon-gray br1">tag</a> <a href="" class="link bg-black-05 pa2 black-60 hover-bg-moon-gray br1">Design</a> <a href="" class="link bg-black-05 pa2 black-60 hover-bg-moon-gray br1">Google</a>
+        <a href="" class="link bg-black-05 pa2 black-60 hover-bg-moon-gray br1">Tachyons</a>
+      </div>
+    </article>
   </div>
-</article>
+</div>
