@@ -7,7 +7,8 @@
   "scripts": {
     "test": "standard --verbose | snazzy",
     "start": "budo index.js:bundle.js --port 8080 --host 0.0.0.0",
-    "build": "node scripts/build-html && node scripts/build-post && node scripts/build && node scripts/build-tags"
+    "build": "npm run clear && node scripts/build-html && node scripts/build-post && node scripts/build && node scripts/build-tags",
+    "clear": "rm -rf index.html views/data.js views/data-posts.js views/data-tags.js views/meta.js"
   },
   "keywords": [],
   "author": "",
