@@ -35,7 +35,7 @@ postLayout = postLayout.replace(/{\/each}/g, '\', post.tags) + \'')
 
 postLayout = minify(postLayout, { collapseWhitespace: true })
 
-var fn = 'const pupa = require(\'pupa\')\n'
+var fn = 'const pupa = require(\'@yerkopalma/pupa\')\n'
 fn += 'function compile (acc, post) {\n'
 fn += '\treturn acc + pupa(\'' + postLayout + '\', post)\n'
 fn += '}\n'

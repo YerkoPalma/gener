@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@yerkopalma/pupa": "^1.2.0",
     "domify": "^1.4.0",
     "handlebars": "^4.0.6",
     "html-minifier": "^3.3.0",
