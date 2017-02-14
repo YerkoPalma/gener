@@ -5,5 +5,8 @@
   "layout": "default",
   "styles": [
     "https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css"
+  ],
+  "scripts": [
+    "script.js"
   ]
 }
