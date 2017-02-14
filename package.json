@@ -17,9 +17,11 @@
     "@yerkopalma/pupa": "^1.2.0",
     "brfs": "^1.4.3",
     "domify": "^1.4.0",
+    "execa": "^0.6.0",
     "handlebars": "^4.0.6",
     "html-minifier": "^3.3.0",
     "marked": "^0.3.6",
+    "meow": "^3.7.0",
     "pupa": "^1.0.0",
     "singleton-router": "^1.2.0"
   },
