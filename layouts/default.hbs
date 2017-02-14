@@ -1,5 +1,24 @@
 <div class="mw9 center ph3-ns">
-  <div class="ph2-ns flex flex-row flex-wrap justify-center">
+  <nav class="flex items-center justify-between flex-wrap flex-column bb b--black-10 bg-white db dt-l w-100 border-box ph3 pt3 ph6-l">
+    <div class="w-100 mb3 flex items-center justify-between flex-wrap flex-row">
+    <a data-route="/" class="w2 ml5 v-mid mid-gray link tc tl-l mb2 mb0-l" href="#" title="Home">
+      <img src="http://tachyons.io/img/logo.jpg" class="dib w2 h2 br-100" alt="Site Name">
+    </a>
+    <div class="db dtc-l v-mid tc tr-l w4">
+      <label id="search" class="flex items-center">
+      <span class="dim pointer self-center">
+      <svg class="self-center" width="25" height="25" viewBox="0 0 25 25"><path d="M20.067 18.933l-4.157-4.157a6 6 0 1 0-.884.884l4.157 4.157a.624.624 0 1 0 .884-.884zM6.5 11c0-2.62 2.13-4.75 4.75-4.75S16 8.38 16 11s-2.13 4.75-4.75 4.75S6.5 13.62 6.5 11z"></path></svg></span>
+      <input class="ml2 outline-0 bn self-center" type="text" placeholder="Search blog..."/> 
+      </label>
+      </div>
+    </div>
+    <ul class="ml5 pl0 mt3 mb2 list mb1 w-75 flex items-start justify-start flex-wrap flex-row">
+      <li class="mr3"><a data-route="/" class="black-80 link dim pointer" href="">Home</a></li>
+      <li class="mr3"><a class="black-80 link dim pointer" href="">Tags</a></li>
+      <li class="mr3"><a class="black-80 link dim pointer" href="">About</a></li>
+    </ul>
+  </nav>
+  <div class="ph2-ns mt4 flex flex-row flex-wrap justify-center">
     <section class="pa2 fl w-80 w-50-l">
       {{#each posts}}
         <article class="mb3 ba b--black-10 bg-white tc pv2 flex flex-row flex-wrap items-center">
