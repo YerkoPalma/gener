@@ -6,7 +6,7 @@ const router = SingletonRouter()
 var event = new Event('rendered')
 
 router.addRoute('/', PostsView, function () { window.dispatchEvent(event)})
-router.addRoute('/:post', PostView)
+router.addRoute('/:post', PostView, function () { window.dispatchEvent(event)})
 router.setRoot('/')
 router.start('#app')
 
