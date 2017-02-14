@@ -15,3 +15,11 @@ fs.readFile(path.resolve(__dirname, '../_index.hbs'), 'utf8', function (err, dat
   var html = minify(template(config))
   fs.writeFileSync(path.resolve(__dirname, '../index.html'), html, 'utf8')
 })
+
+// read scripts
+if (config.scripts && Array.isArray(config.scripts)) {
+  var scripts = config.scripts.reduce((acc, script) => {
+    return acc + fs.readFileSync(path.resolve(__dirname, '..', script), 'utf8') + '\n'
+  }, '')
+  fs.writeFileSync(path.resolve(__dirname, '../_scripts.js'), 'module.exports = function () { \n' + scripts + '}', 'utf8')
+}

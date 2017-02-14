@@ -1,3 +1,4 @@
+module.exports = function () { 
 var search = document.getElementById('search')
 var parent = search.parentNode
 
@@ -26,3 +27,5 @@ window.addEventListener('click', function (e) {
     search.parentNode.classList.remove('w5')
   }
 })
+
+}
