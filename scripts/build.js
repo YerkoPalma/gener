@@ -3,8 +3,8 @@
 
 var fs = require('fs')
 var path = require('path')
-const posts = require('../views/data.js')
-const layout = require('../config.json').layout
+const posts = require(path.resolve(process.cwd(), 'views/data.js'))
+const layout = require(path.resolve(process.cwd(), 'config.json')).layout
 var minify = require('html-minifier').minify
 
 var postsClone = posts
