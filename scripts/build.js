@@ -43,5 +43,5 @@ fn += 'module.exports = function (posts) {\n'
 fn += '\treturn \'' + start + '\' + posts.reduce(compile, \'\') + \'' + end + ' \'\n}\n'
 var metaPosts = 'module.exports = ' + JSON.stringify(postArray)
 
-fs.writeFile(path.resolve(__dirname, '../views/meta.js'), metaPosts)
-fs.writeFile(path.resolve(__dirname, '../views/data-posts.js'), fn)
+fs.writeFile(path.resolve(process.cwd(), 'views/meta.js'), metaPosts)
+fs.writeFile(path.resolve(process.cwd(), 'views/data-posts.js'), fn)
