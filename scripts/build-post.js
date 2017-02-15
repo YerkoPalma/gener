@@ -13,7 +13,7 @@ var minify = require('html-minifier').minify
 // 0 Declare variables
 var datajs = path.resolve(__dirname, '../views/data.js')
 var postLayoutFile = path.resolve(__dirname, '../layouts', layout + '-post.hbs')
-var postsFolder = path.resolve(__dirname, '../posts')
+var postsFolder = path.resolve(process.cwd(), '../posts')
 var postFile = function (filename) { return path.resolve(postsFolder, filename) }
 var stringifyProp = function (key, value) { return '\'' + key + '\': \'' + value + '\'' }
 // 1 Create data.js
