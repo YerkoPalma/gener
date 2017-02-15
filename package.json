@@ -1,8 +1,19 @@
 {
   "name": "gener",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Simple static site generator",
   "main": "index.js",
+  "files": [
+    "scripts/*",
+    "libs/*",
+    "bin.js",
+    "views/post.js",
+    "views/posts.js",
+    "views/tags.js"
+  ],
+  "bin": {
+    "gener": "bin.js"
+  },
   "repository": "YerkoPalma/gener",
   "scripts": {
     "test": "standard --verbose | snazzy",
