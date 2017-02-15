@@ -26,12 +26,17 @@ const cli = meow(`
     }
 })
 
+if (cli.flags['h'] || cli.flags['help']) {
+  cli.showHelp()
+  process.exit(0)
+}
+
 if (cli.input.length === 0) {
   // clear
   rm(['index.html', '_scripts.js', 'views/data.js', 'views/data-posts.js', 'views/meta.js'], function () {
-    execa('node', ['./scripts/build-html.js']).then(function (html) {
-      execa('node', ['./scripts/build-post.js']).then(function (html) {
-        execa('node', ['./scripts/build.js']).then(function (html) {
+    execa('node', ['scripts/build-html.js']).then(function (html) {
+      execa('node', ['scripts/build-post.js']).then(function (html) {
+        execa('node', ['scripts/build.js']).then(function (html) {
           console.log('Generated!')
         })
       })
