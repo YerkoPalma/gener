@@ -45,3 +45,9 @@ var metaPosts = 'module.exports = ' + JSON.stringify(postArray)
 
 fs.writeFile(path.resolve(process.cwd(), 'views/meta.js'), metaPosts)
 fs.writeFile(path.resolve(process.cwd(), 'views/data-posts.js'), fn)
+
+// finally copy index.js
+
+if (path.resolve(__dirname, '../index.js') !== path.resolve(process.cwd(), 'index.js'))
+fs.createReadStream(path.resolve(__dirname, '../index.js'))
+  .pipe(fs.createWriteStream(path.resolve(process.cwd(), 'index.js')))
