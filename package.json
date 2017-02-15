@@ -14,7 +14,10 @@
     "views/posts.js",
     "views/tags.js",
     "config.json",
-    "script.js"
+    "script.js",
+    "_index.hbs",
+    "layouts/default.hbs",
+    "layouts/default-post.hbs"
   ],
   "bin": {
     "gener": "bin.js"
