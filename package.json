@@ -13,7 +13,8 @@
     "views/post.js",
     "views/posts.js",
     "views/tags.js",
-    "config.json"
+    "config.json",
+    "script.js"
   ],
   "bin": {
     "gener": "bin.js"
