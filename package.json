@@ -4,8 +4,11 @@
   "description": "Simple static site generator",
   "main": "index.js",
   "files": [
-    "scripts/*",
-    "libs/*",
+    "scripts/build.js",
+    "scripts/build-html.js",
+    "scripts/build-post.js",
+    "libs/helpers.js",
+    "libs/md-renderer.js",
     "bin.js",
     "views/post.js",
     "views/posts.js",
