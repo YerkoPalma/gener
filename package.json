@@ -47,7 +47,11 @@
   },
   "devDependencies": {
     "ava": "^0.18.2",
+    "axios": "^0.15.3",
     "budo": "^9.4.5",
+    "ecstatic": "^2.1.0",
+    "get-port": "^2.1.0",
+    "pify": "^2.3.0",
     "snazzy": "^6.0.0",
     "standard": "^8.6.0"
   }
