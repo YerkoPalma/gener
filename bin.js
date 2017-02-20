@@ -20,10 +20,10 @@ const cli = meow(`
       $ gener -s src -d dist
 
 `, {
-    alias: {
-        d: 'dist',
-        s: 'source'
-    }
+  alias: {
+    d: 'dist',
+    s: 'source'
+  }
 })
 
 if (cli.flags['h'] || cli.flags['help']) {
