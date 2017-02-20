@@ -7,6 +7,7 @@
     "scripts/build.js",
     "scripts/build-html.js",
     "scripts/build-post.js",
+    "scripts/build-min.js",
     "libs/helpers.js",
     "libs/md-renderer.js",
     "bin.js",
