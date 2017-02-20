@@ -8,7 +8,7 @@ const path = require('path')
 
 const cli = meow(`
     Usage
-      $ gener <input>
+      $ gener
 
     Options
       --source, -s  Change the source directory (Default: current directory)
