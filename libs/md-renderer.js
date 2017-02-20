@@ -34,9 +34,9 @@ renderer.hr = function () {
 }
 
 renderer.list = function (body, ordered) {
-  return ordered ?
-          '<ol class="fw1 lh-copy georgia f4">' + body + '</ol>' :
-          '<ul class="fw1 lh-copy georgia f4">' + body + '</ul>'
+  return ordered
+          ? '<ol class="fw1 lh-copy georgia f4">' + body + '</ol>'
+          : '<ul class="fw1 lh-copy georgia f4">' + body + '</ul>'
 }
 
 renderer.strong = function (text) {

@@ -47,6 +47,7 @@
   },
   "devDependencies": {
     "budo": "^9.4.5",
+    "snazzy": "^6.0.0",
     "standard": "^8.6.0"
   }
 }
