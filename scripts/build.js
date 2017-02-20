@@ -3,7 +3,7 @@
 
 var fs = require('fs')
 var path = require('path')
-const posts = require(path.resolve(process.cwd(), 'views/data.js'))
+const posts = require(path.resolve(__dirname, '../views/data.js'))
 const layout = require(path.resolve(process.cwd(), 'config.json')).layout
 var minify = require('html-minifier').minify
 
@@ -43,11 +43,11 @@ fn += 'module.exports = function (posts) {\n'
 fn += '\treturn \'' + start + '\' + posts.reduce(compile, \'\') + \'' + end + ' \'\n}\n'
 var metaPosts = 'module.exports = ' + JSON.stringify(postArray)
 
-fs.writeFile(path.resolve(process.cwd(), 'views/meta.js'), metaPosts)
-fs.writeFile(path.resolve(process.cwd(), 'views/data-posts.js'), fn)
+fs.writeFile(path.resolve(__dirname, '../views/meta.js'), metaPosts)
+fs.writeFile(path.resolve(__dirname, '../views/data-posts.js'), fn)
 
 // finally copy index.js
 
-if (path.resolve(__dirname, '../index.js') !== path.resolve(process.cwd(), 'index.js'))
-fs.createReadStream(path.resolve(__dirname, '../index.js'))
-  .pipe(fs.createWriteStream(path.resolve(process.cwd(), 'index.js')))
+// if (path.resolve(__dirname, '../index.js') !== path.resolve(process.cwd(), 'index.js'))
+// fs.createReadStream(path.resolve(__dirname, '../index.js'))
+//   .pipe(fs.createWriteStream(path.resolve(process.cwd(), 'index.js')))

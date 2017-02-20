@@ -33,11 +33,14 @@ if (cli.flags['h'] || cli.flags['help']) {
 
 if (cli.input.length === 0) {
   // clear
-  rm(['index.html', '_scripts.js', 'views/data.js', 'views/data-posts.js', 'views/meta.js'], function () {
+  rm(['index.html', '_scripts.js', 'views/data.js', 'views/data-posts.js', 'views/meta.js', 'bundle.js'], function () {
     execa('node', [path.resolve(__dirname, 'scripts/build-html.js')]).then(function (html) {
       execa('node', [path.resolve(__dirname, 'scripts/build-post.js')]).then(function (html) {
         execa('node', [path.resolve(__dirname, 'scripts/build.js')]).then(function (html) {
           console.log('Generated!')
+          execa('node', [path.resolve(__dirname, 'scripts/build-min.js')]).then(function (html) {
+            console.log('minified!')
+          })
         })
       })
     })

@@ -21,5 +21,5 @@ if (config.scripts && Array.isArray(config.scripts)) {
   var scripts = config.scripts.reduce((acc, script) => {
     return acc + fs.readFileSync(path.resolve(__dirname, '..', script), 'utf8') + '\n'
   }, '')
-  fs.writeFileSync(path.resolve(process.cwd(), '_scripts.js'), 'module.exports = function () { \n' + scripts + '}', 'utf8')
+  fs.writeFileSync(path.resolve(__dirname, '..', '_scripts.js'), 'module.exports = function () { \n' + scripts + '}', 'utf8')
 }
