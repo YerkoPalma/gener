@@ -1,34 +1,35 @@
 {
   "name": "gener",
-  "version": "0.3.2",
+  "version": "1.0.2",
   "description": "Simple static site generator",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "scripts/build.js",
-    "scripts/build-html.js",
-    "scripts/build-post.js",
-    "scripts/build-min.js",
-    "libs/helpers.js",
-    "libs/md-renderer.js",
-    "bin.js",
-    "views/post.js",
-    "views/posts.js",
-    "views/tags.js",
-    "config.json",
-    "script.js",
-    "_index.hbs",
-    "layouts/default.hbs",
-    "layouts/default-post.hbs"
+    "src/scripts/build.js",
+    "src/scripts/build-html.js",
+    "src/scripts/build-post.js",
+    "src/scripts/prebuild.js",
+    "src/scripts/build-min.js",
+    "src/libs/helpers.js",
+    "src/libs/md-renderer.js",
+    "src/bin.js",
+    "src/views/post.js",
+    "src/views/posts.js",
+    "src/views/tags.js",
+    "src/defaults/config.json",
+    "src/defaults/script.js",
+    "src/defaults/_index.hbs",
+    "src/defaults/layouts/default.hbs",
+    "src/defaults/layouts/default-post.hbs"
   ],
   "bin": {
-    "gener": "bin.js"
+    "gener": "src/bin.js"
   },
   "repository": "YerkoPalma/gener",
   "scripts": {
     "test": "standard --verbose | snazzy && ava",
     "start": "budo index.js:bundle.js --port 8080 --host 0.0.0.0",
-    "build": "npm run clear && node scripts/build-html && node scripts/build-post && node scripts/build",
-    "clear": "rm -rf index.html _scripts.js views/data.js views/data-posts.js views/meta.js bundle.js"
+    "build": "npm run clear && node src/scripts/prebuild.js && node src/scripts/build-html && node src/scripts/build-post && node src/scripts/build",
+    "clear": "rm -rf index.html src/defaults/_scripts.js src/views/data.js src/views/data-posts.js src/views/meta.js bundle.js"
   },
   "keywords": [],
   "author": "",

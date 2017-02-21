@@ -4,7 +4,7 @@
 var fs = require('fs')
 var path = require('path')
 const posts = require(path.resolve(__dirname, '../views/data.js'))
-const layout = require(path.resolve(process.cwd(), 'config.json')).layout
+const layout = require('../defaults/config.json').layout
 var minify = require('html-minifier').minify
 
 var postsClone = posts
@@ -22,7 +22,7 @@ for (var prop in postsClone) {
   }
 }
 
-var postsLayout = fs.readFileSync(path.resolve(__dirname, '../layouts', layout + '.hbs'), 'utf8')
+var postsLayout = fs.readFileSync(path.resolve(__dirname, '../defaults/layouts', layout + '.hbs'), 'utf8')
 var from = postsLayout.indexOf('{{#each posts}}') + 15
 var to = postsLayout.lastIndexOf('{{/each}}')
 var postLayout = postsLayout.substring(from, to).replace(/{{/g, '{').replace(/}}/g, '}')

@@ -13,5 +13,5 @@ router.start('#app')
 
 window.addEventListener('rendered', function (e) {
   // rendered
-  require('./_scripts.js')()
+  require('./defaults/_scripts.js')()
 }, false)
