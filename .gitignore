@@ -5,3 +5,4 @@ _scripts.js
 index.html
 *.log
 posts/
+!test/posts
