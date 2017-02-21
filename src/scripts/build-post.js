@@ -6,14 +6,14 @@ var path = require('path')
 var marked = require('marked')
 const Handlebars = require('handlebars')
 const renderer = require('../libs/md-renderer.js')
-const layout = require('../config.json').layout
+const layout = require('../defaults/config.json').layout
 const formatDate = require('../libs/helpers').formatDate
 var minify = require('html-minifier').minify
 
 // 0 Declare variables
 var viewFolder = path.resolve(__dirname, '../views')
 var datajs = path.resolve(__dirname, '../views/data.js')
-var postLayoutFile = path.resolve(__dirname, '../layouts', layout + '-post.hbs')
+var postLayoutFile = path.resolve(__dirname, '../defaults/layouts', layout + '-post.hbs')
 var postsFolder = path.resolve(process.cwd(), 'posts')
 var postFile = function (filename) { return path.resolve(postsFolder, filename) }
 var stringifyProp = function (key, value) { return '\'' + key + '\': \'' + value + '\'' }
