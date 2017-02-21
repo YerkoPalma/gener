@@ -7,6 +7,7 @@
     "src/scripts/build.js",
     "src/scripts/build-html.js",
     "src/scripts/build-post.js",
+    "src/scripts/prebuild.js",
     "src/scripts/build-min.js",
     "src/libs/helpers.js",
     "src/libs/md-renderer.js",
