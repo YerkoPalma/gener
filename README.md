@@ -1,4 +1,5 @@
-# gener [![npm version](https://img.shields.io/npm/v/gener.svg?style=flat-square)](https://www.npmjs.com/package/gener) [![Build Status](https://img.shields.io/travis/YerkoPalma/gener/master.svg?style=flat-square)](https://travis-ci.org/YerkoPalma/gener) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
+# gener [![npm version](https://img.shields.io/npm/v/gener.svg?style=flat-square)](https://www.npmjs.com/package/gener) 
+[![Build Status](https://img.shields.io/travis/YerkoPalma/gener/master.svg?style=flat-square)](https://travis-ci.org/YerkoPalma/gener) [![test coverage](https://img.shields.io/codecov/c/github/yerkopalma/gener/master.svg?style=flat-square)](https://codecov.io/github/yerkopalma/gener) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/feross/standard)
 
 > Simple static ~~site~~ blog generator
 
