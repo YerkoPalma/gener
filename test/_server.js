@@ -24,5 +24,5 @@ function createServer (fn) {
 
 exports.createServer = createServer((req, res) => {
   res.writeHead(200, {'content-type': 'text/html'})
-  res.end(fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8'))
+  res.end(fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'))
 })
