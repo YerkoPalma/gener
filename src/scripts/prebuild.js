@@ -8,24 +8,26 @@ var path = require('path')
 var userConfig = {}
 var defaultConfig = require('../defaults/config.json')
 
-fs.readFile(path.resolve(process.cwd(), 'config.json'), 'utf8', function (err, data) {
-  if (err) throw err
-  console.log('reading user config')
-  userConfig = JSON.parse(data)
-  // copy layout files if they are present
-  if (userConfig.layout) {
-    console.log('copying user layouts')
-    fs.readdir(path.resolve(process.cwd(), 'layouts'), function (err, files) {
-      if (err) throw err
-      files = files.filter(function (file) {
-        return file.indexOf(userConfig.layout) > -1
+if (fs.existsSync(path.resolve(process.cwd(), 'config.json'))) {
+  fs.readFile(path.resolve(process.cwd(), 'config.json'), 'utf8', function (err, data) {
+    if (err) throw err
+    console.log('reading user config')
+    userConfig = JSON.parse(data)
+    // copy layout files if they are present
+    if (userConfig.layout) {
+      console.log('copying user layouts')
+      fs.readdir(path.resolve(process.cwd(), 'layouts'), function (err, files) {
+        if (err) throw err
+        files = files.filter(function (file) {
+          return file.indexOf(userConfig.layout) > -1
+        })
+        files.forEach(function (file) {
+          fs.createReadStream(path.resolve(process.cwd(), 'layouts', file))
+            .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', 'layouts', file)))
+        })
       })
-      files.forEach(function (file) {
-        fs.createReadStream(path.resolve(process.cwd(), 'layouts', file))
-          .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', 'layouts', file)))
-      })
-    })
-  }
-  var config = Object.assign(defaultConfig, userConfig)
-  fs.writeFile(path.resolve(__dirname, '../defaults/config.json'), JSON.stringify(config, null, 2), 'utf8', function () {})
-})
+    }
+    var config = Object.assign(defaultConfig, userConfig)
+    fs.writeFile(path.resolve(__dirname, '../defaults/config.json'), JSON.stringify(config, null, 2), 'utf8', function () {})
+  })
+}

@@ -10,7 +10,7 @@ var server
 
 test.before(async () => {
   console.log('Generatin files...')
-  await execa('node', [path.resolve(__dirname, 'bin.js')])
+  await execa('node', [path.resolve(__dirname, '..', 'src', 'bin.js')])
   // run server on recently generated files
   console.log('Starting server...')
   server = await createServer()
@@ -24,9 +24,9 @@ test.after(() => {
 
 test('main', async t => {
   console.log('Checking files...')
-  t.true(fs.existsSync(path.resolve(__dirname, 'index.html')))
-  t.true(fs.existsSync(path.resolve(__dirname, 'bundle.js')))
-  t.true(fs.existsSync(path.resolve(__dirname, 'config.json')))
+  t.true(fs.existsSync(path.resolve(__dirname, '..', 'index.html')))
+  t.true(fs.existsSync(path.resolve(__dirname, '..', 'bundle.js')))
+  // t.true(fs.existsSync(path.resolve(__dirname, '..', 'config.json')))
 
   // check responde of the server
   console.log('Checking response...')
