@@ -1,6 +1,6 @@
 {
   "name": "gener",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Simple static site generator",
   "main": "src/index.js",
   "files": [
