@@ -6,3 +6,5 @@ index.html
 *.log
 posts/
 !test/posts
+coverage/
+.nyc_output
