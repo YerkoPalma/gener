@@ -1,54 +1,68 @@
 const marked = require('marked')
+const classes = require('../defaults/config.json').classes
 
 // marked
 var renderer = new marked.Renderer()
 
 renderer.paragraph = function (text) {
-  return '<p class="black-80 fw1 lh-copy georgia f4">' + text + '</p>'
+  var css = classes.p
+  return '<p class="' + css + '">' + text + '</p>'
 }
 
 renderer.blockquote = function (quote) {
   quote = quote.replace(/class="(.*)"/g, '')
-  return '<blockquote class="lh-copy bl bw2 b--black-80 mh0 pl4 mv2 f4 georgia fw4 i tracked-tight black-80">' + quote + '</blockquote>'
+  var css = classes.blockquote
+  return '<blockquote class="' + css + '">' + quote + '</blockquote>'
 }
 
 renderer.heading = function (text, level) {
+  var css
   switch (level) {
     case 1:
-      return '<h1 class="f2 mb2 black-80" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h1>'
+      css = classes.h1
+      return '<h1 class="' + css + '" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h1>'
     case 2:
-      return '<h2 class="f3 mt2 fw1 silver black-80" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h2>'
+      css = classes.h2
+      return '<h2 class="' + css + '" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h2>'
     case 3:
-      return '<h3 class="f3 black-80" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h3>'
+      css = classes.h3
+      return '<h3 class="' + css + '" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h3>'
     default:
-      return '<h' + level + ' class="f3 black-80" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h' + level + '>'
+      css = classes['h' + level]
+      return '<h' + level + ' class="' + css + '" id="' + text.toLowerCase().replace(/[^\w]+/g, '-') + '">' + text + '</h' + level + '>'
   }
 }
 
 renderer.code = function (code) {
-  return '<pre class="courier f5"><code>' + code + '</code></pre>'
+  var css = classes.code
+  return '<pre class="' + css + '"><code>' + code + '</code></pre>'
 }
 
 renderer.hr = function () {
-  return '<hr class="light-silver mb4">'
+  var css = classes.hr
+  return '<hr class="' + css + '">'
 }
 
 renderer.list = function (body, ordered) {
+  var css = ordered ? classes.ol : classes.ul
   return ordered
-          ? '<ol class="fw1 lh-copy georgia f4">' + body + '</ol>'
-          : '<ul class="fw1 lh-copy georgia f4">' + body + '</ul>'
+          ? '<ol class="' + css + '">' + body + '</ol>'
+          : '<ul class="' + css + '">' + body + '</ul>'
 }
 
 renderer.strong = function (text) {
-  return '<strong class="b">' + text + '</strong>'
+  var css = classes.strong
+  return '<strong class="' + css + '">' + text + '</strong>'
 }
 
 renderer.codespan = function (code) {
-  return '<code class="courier">' + code + '</code>'
+  var css = classes.codespan
+  return '<code class="' + css + '">' + code + '</code>'
 }
 
 renderer.link = function (href, title, text) {
-  return '<a href="' + href + '" class="link underline black-80">' + text + '</a>'
+  var css = classes.link
+  return '<a href="' + href + '" class="' + css + '">' + text + '</a>'
 }
 
 module.exports = renderer
