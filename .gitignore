@@ -1,10 +1,12 @@
 node_modules/
-views/data*.*
-views/meta.js
+src/views/data*.js
+src/views/meta.js
 _scripts.js
 index.html
 *.log
 posts/
 !test/posts
+test/index.html
+test/bundle.js
 coverage/
 .nyc_output
