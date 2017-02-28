@@ -11,11 +11,9 @@ var defaultConfig = require('../defaults/config.json')
 if (fs.existsSync(path.resolve(process.cwd(), 'config.json'))) {
   fs.readFile(path.resolve(process.cwd(), 'config.json'), 'utf8', function (err, data) {
     if (err) throw err
-    console.log('reading user config')
     userConfig = JSON.parse(data)
     // copy layout files if they are present
     if (userConfig.layout && fs.existsSync(path.resolve(process.cwd(), 'layouts'))) {
-      console.log('copying user layouts')
       fs.readdir(path.resolve(process.cwd(), 'layouts'), function (err, files) {
         if (err) throw err
         files = files.filter(function (file) {

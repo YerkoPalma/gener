@@ -2,9 +2,16 @@
 'use strict'
 
 const meow = require('meow')
-const execa = require('execa')
+// const execa = require('execa')
 const fs = require('fs')
 const path = require('path')
+const buildConfig = require('./libs/prebuild').buildConfig
+const buildIndex = require('./libs/build-html').buildIndex
+const buildScripts = require('./libs/build-html').buildScripts
+const buildPostsData = require('./libs/build-post').buildPostsData
+const buildPostsViews = require('./libs/build').buildPostsViews
+const buildPostsMeta = require('./libs/build').buildPostsMeta
+const buildBundle = require('./libs/build-min').buildBundle
 
 const cli = meow(`
     Usage
@@ -32,20 +39,23 @@ if (cli.flags['h'] || cli.flags['help']) {
 }
 
 if (cli.input.length === 0) {
+  var dist = cli.flags['d'] || cli.flags['dist'] || '.'
+  var source = cli.flags['s'] || cli.flags['source'] || '.'
+
   // clear
   rm(['index.html', 'src/defaults/_scripts.js', 'src/views/data.js', 'src/views/data-posts.js', 'src/views/meta.js', 'bundle.js'], function () {
-    execa('node', [path.resolve(__dirname, 'scripts/prebuild.js')]).then(function (html) {
-      execa('node', [path.resolve(__dirname, 'scripts/build-html.js')]).then(function (html) {
-        execa('node', [path.resolve(__dirname, 'scripts/build-post.js')]).then(function (html) {
-          execa('node', [path.resolve(__dirname, 'scripts/build.js')]).then(function (html) {
-            console.log('Generated!')
-            execa('node', [path.resolve(__dirname, 'scripts/build-min.js')]).then(function (html) {
-              console.log('minified!')
-            })
-          })
-        })
-      })
-    })
+    console.log(typeof buildConfig)
+    buildConfig(
+      buildIndex(
+        buildPostsData(
+          buildPostsViews(
+            buildPostsMeta(
+              buildBundle
+            )
+          )
+        )
+      )
+    )
   })
 }
 
