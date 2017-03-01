@@ -17,7 +17,10 @@ function buildPostsData () {
   var viewFolder = path.resolve(__dirname, '../views')
   var datajs = path.resolve(__dirname, '../views/data.js')
   var postLayoutFile = path.resolve(__dirname, '../defaults/layouts', layout + '-post.hbs')
-  var postsFolder = path.resolve(process.cwd(), 'posts')
+  console.log('\npóst-layout: ' + postLayoutFile + '\n')
+  var postsFolder = global.source
+                    ? path.resolve(process.cwd(), global.source, 'posts')
+                    : path.resolve(process.cwd(), 'posts')
   var postFile = function (filename) { return path.resolve(postsFolder, filename) }
   var stringifyProp = function (key, value) { return '\'' + key + '\': \'' + value + '\'' }
   // 1 Create data.js

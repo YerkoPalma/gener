@@ -4,15 +4,31 @@ const buildIndex = require('./build-html').buildIndex
 
 function buildLayout (userConfig) {
   console.log('building layout...')
-  fs.readdir(path.resolve(process.cwd(), 'layouts'), function (err, files) {
+  var src = global.source
+              ? path.resolve(process.cwd(), global.source, 'layouts')
+              : path.resolve(process.cwd(), 'layouts')
+  fs.readdir(src, function (err, files) {
     if (err) throw err
     files = files.filter(function (file) {
       return file.indexOf(userConfig.layout) > -1
     })
     files.forEach(function (file) {
-      fs.createReadStream(path.resolve(process.cwd(), 'layouts', file))
+      fs.createReadStream(path.resolve(src, file))
         .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', 'layouts', file)))
     })
+  })
+}
+
+function copyScripts (config) {
+  var src = global.source
+            ? path.resolve(process.cwd(), global.source)
+            : path.resolve(process.cwd())
+  config.scripts.forEach((script) => {
+    // if there are script files present, copy to default folder
+    if (fs.existsSync(path.resolve(src, script))) {
+      fs.createReadStream(path.resolve(src, script))
+        .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', script)))
+    }
   })
 }
 
@@ -22,16 +38,25 @@ function buildConfig () {
   // in this case, a merge of options
   var userConfig = {}
   var defaultConfig = require('../defaults/config.json')
-
-  if (fs.existsSync(path.resolve(process.cwd(), 'config.json'))) {
-    fs.readFile(path.resolve(process.cwd(), 'config.json'), 'utf8', function (err, data) {
+  var src = global.source
+              ? path.resolve(process.cwd(), global.source, 'config.json')
+              : path.resolve(process.cwd(), 'config.json')
+  var layoutSrc = global.source
+              ? path.resolve(process.cwd(), global.source, 'layouts')
+              : path.resolve(process.cwd(), 'layouts')
+  if (fs.existsSync(src)) {
+    fs.readFile(src, 'utf8', function (err, data) {
       if (err) throw err
       userConfig = JSON.parse(data)
       // copy layout files if they are present
-      if (userConfig.layout && fs.existsSync(path.resolve(process.cwd(), 'layouts'))) {
+      if (userConfig.layout && fs.existsSync(layoutSrc)) {
         buildLayout(userConfig)
       }
       var config = Object.assign(defaultConfig, userConfig)
+      // read scripts
+      if (config.scripts && Array.isArray(config.scripts)) {
+        copyScripts(config)
+      }
       fs.writeFile(
         path.resolve(__dirname, '../defaults/config.json'),
         JSON.stringify(config, null, 2),
