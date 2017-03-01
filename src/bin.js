@@ -32,8 +32,14 @@ if (cli.flags['h'] || cli.flags['help']) {
 }
 
 if (cli.input.length === 0) {
-  var dist = cli.flags['d'] || cli.flags['dist'] || '.'
-  var source = cli.flags['s'] || cli.flags['source'] || '.'
+  var dist = cli.flags['d'] || cli.flags['dist'] || null
+  var source = cli.flags['s'] || cli.flags['source'] || null
+  // make them global
+  global.dist = dist
+  global.source = source
+  if (!fs.existsSync(path.resolve(process.cwd(), global.dist))) {
+    fs.mkdirSync(path.resolve(process.cwd(), global.dist))
+  }
 
   // clear
   rm(['index.html', 'src/defaults/_scripts.js', 'src/views/data.js', 'src/views/data-posts.js', 'src/views/meta.js', 'bundle.js'], function () {

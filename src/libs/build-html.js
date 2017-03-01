@@ -13,8 +13,11 @@ function buildIndex () {
     var template = Handlebars.compile(data)
 
     var html = minify(template(config))
+    var dest = global.dist
+              ? path.resolve(process.cwd(), global.dist, 'index.html')
+              : path.resolve(process.cwd(), 'index.html')
     fs.writeFile(
-      path.resolve(process.cwd(), 'index.html'),
+      dest,
       html,
       'utf8',
       buildScripts
