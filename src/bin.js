@@ -2,9 +2,9 @@
 'use strict'
 
 const meow = require('meow')
-const execa = require('execa')
 const fs = require('fs')
 const path = require('path')
+const buildConfig = require('./libs/prebuild').buildConfig
 
 const cli = meow(`
     Usage
@@ -32,20 +32,18 @@ if (cli.flags['h'] || cli.flags['help']) {
 }
 
 if (cli.input.length === 0) {
+  var dist = cli.flags['d'] || cli.flags['dist'] || null
+  var source = cli.flags['s'] || cli.flags['source'] || null
+  // make them global
+  global.dist = dist
+  global.source = source
+  if (dist && !fs.existsSync(path.resolve(process.cwd(), global.dist))) {
+    fs.mkdirSync(path.resolve(process.cwd(), global.dist))
+  }
+
   // clear
   rm(['index.html', 'src/defaults/_scripts.js', 'src/views/data.js', 'src/views/data-posts.js', 'src/views/meta.js', 'bundle.js'], function () {
-    execa('node', [path.resolve(__dirname, 'scripts/prebuild.js')]).then(function (html) {
-      execa('node', [path.resolve(__dirname, 'scripts/build-html.js')]).then(function (html) {
-        execa('node', [path.resolve(__dirname, 'scripts/build-post.js')]).then(function (html) {
-          execa('node', [path.resolve(__dirname, 'scripts/build.js')]).then(function (html) {
-            console.log('Generated!')
-            execa('node', [path.resolve(__dirname, 'scripts/build-min.js')]).then(function (html) {
-              console.log('minified!')
-            })
-          })
-        })
-      })
-    })
+    buildConfig()
   })
 }
 
