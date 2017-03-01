@@ -1,10 +1,9 @@
 var fs = require('fs')
 var path = require('path')
-var assert = require('assert')
+const buildIndex = require('./build-html').buildIndex
 
 function buildLayout (userConfig) {
-  assert.equal(typeof userConfig, 'object')
-
+  console.log('building layout...')
   fs.readdir(path.resolve(process.cwd(), 'layouts'), function (err, files) {
     if (err) throw err
     files = files.filter(function (file) {
@@ -17,10 +16,8 @@ function buildLayout (userConfig) {
   })
 }
 
-function buildConfig (cb) {
-  // assert.equal(typeof cb, 'function', '[gener/buildConfig]: cb must be a function')
-
-  // console.log(typeof cb)
+function buildConfig () {
+  console.log('building config...')
   // create config file
   // in this case, a merge of options
   var userConfig = {}
@@ -39,9 +36,11 @@ function buildConfig (cb) {
         path.resolve(__dirname, '../defaults/config.json'),
         JSON.stringify(config, null, 2),
         'utf8',
-        cb()
+        buildIndex
       )
     })
+  } else {
+    buildIndex()
   }
 }
 

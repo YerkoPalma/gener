@@ -9,11 +9,10 @@ const renderer = require('../libs/md-renderer.js')
 const layout = require('../defaults/config.json').layout
 const formatDate = require('../libs/helpers').formatDate
 var minify = require('html-minifier').minify
-//var assert = require('assert')
+const buildPostsViews = require('./build').buildPostsViews
 
-function buildPostsData (cb) {
-  //assert.equal(typeof cb, 'function')
-
+function buildPostsData () {
+  console.log('building post-data...')
   // 0 Declare variables
   var viewFolder = path.resolve(__dirname, '../views')
   var datajs = path.resolve(__dirname, '../views/data.js')
@@ -24,30 +23,35 @@ function buildPostsData (cb) {
   // 1 Create data.js
   if (!fs.existsSync(viewFolder)) fs.mkdirSync(viewFolder)
   fs.writeFileSync(datajs, '', 'utf8')
+  console.log('created ' + datajs)
   // 2 Read layouts
   const postLayout = fs.readFileSync(postLayoutFile, 'utf8')
+  console.log('readed ' + postLayoutFile)
   Handlebars.registerHelper('formatDate', formatDate)
   var template = Handlebars.compile(postLayout)
   // 3 Read posts
+  console.log('reading ' + postsFolder)
   fs.readdir(postsFolder, function (err, posts) {
     if (err) throw err
 
+    console.log('found ' + posts)
     // 4 Create streams
     var ws = fs.createWriteStream(datajs, { flags: 'r+' })
     ws.write('module.exports = {\n')
     var obj = {}
     var postsPaths = []
     posts.map(function (post, i) {
+      console.log('creating readstream on ' + postFile(post))
       var rs = fs.createReadStream(postFile(post), 'utf8')
       var postContent = ''
       rs.on('data', function (chunk) {
         postContent += chunk
       })
       rs.on('end', function () {
+        console.log('finished reading from ' + postFile(post))
         var tmpPath = '/' + post.split('.')[0]
-        console.log(tmpPath)
         if (postsPaths.indexOf(tmpPath) === -1) postsPaths.push(tmpPath)
-  
+
         if (path.extname(post) === '.json') {
           obj[post] = JSON.stringify(JSON.parse(postContent))
           ws.write(stringifyProp(post, JSON.stringify(JSON.parse(postContent))))
@@ -69,7 +73,7 @@ function buildPostsData (cb) {
           })
           ws.write('\n}')
           // callback
-          cb()
+          buildPostsViews()
         } else {
           ws.write(',\n')
         }
