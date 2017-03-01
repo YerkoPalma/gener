@@ -37,7 +37,7 @@ if (cli.input.length === 0) {
   // make them global
   global.dist = dist
   global.source = source
-  if (!fs.existsSync(path.resolve(process.cwd(), global.dist))) {
+  if (dist && !fs.existsSync(path.resolve(process.cwd(), global.dist))) {
     fs.mkdirSync(path.resolve(process.cwd(), global.dist))
   }
 
