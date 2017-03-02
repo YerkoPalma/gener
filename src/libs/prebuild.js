@@ -1,29 +1,38 @@
 var fs = require('fs')
 var path = require('path')
+const assert = require('assert')
 const buildIndex = require('./build-html').buildIndex
 
-function buildLayout (userConfig) {
-  console.log('building layout...')
+function buildLayout (layout, cb) {
+  assert.equal(typeof layout, 'string')
+
   var src = global.source
               ? path.resolve(process.cwd(), global.source, 'layouts')
               : path.resolve(process.cwd(), 'layouts')
-  fs.readdir(src, function (err, files) {
-    if (err) throw err
-    files = files.filter(function (file) {
-      return file.indexOf(userConfig.layout) > -1
+  if (fs.existsSync(src)) {
+    fs.readdir(src, function (err, files) {
+      if (err) {
+        throw err
+      }
+      files = files.filter(function (file) {
+        return file.indexOf(layout) > -1
+      })
+      files.forEach(function (file) {
+        fs.createReadStream(path.resolve(src, file))
+          .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', 'layouts', file)))
+      })
+      if (cb && typeof cb === 'function') cb()
     })
-    files.forEach(function (file) {
-      fs.createReadStream(path.resolve(src, file))
-        .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', 'layouts', file)))
-    })
-  })
+  }
 }
 
-function copyScripts (config) {
+function copyScripts (scripts) {
+  assert.ok(Array.isArray(scripts))
+
   var src = global.source
             ? path.resolve(process.cwd(), global.source)
             : path.resolve(process.cwd())
-  config.scripts.forEach((script) => {
+  scripts.forEach((script) => {
     // if there are script files present, copy to default folder
     if (fs.existsSync(path.resolve(src, script))) {
       fs.createReadStream(path.resolve(src, script))
@@ -33,7 +42,6 @@ function copyScripts (config) {
 }
 
 function buildConfig () {
-  console.log('building config...')
   // create config file
   // in this case, a merge of options
   var userConfig = {}
@@ -50,12 +58,12 @@ function buildConfig () {
       userConfig = JSON.parse(data)
       // copy layout files if they are present
       if (userConfig.layout && fs.existsSync(layoutSrc)) {
-        buildLayout(userConfig)
+        buildLayout(userConfig.layout)
       }
       var config = Object.assign(defaultConfig, userConfig)
       // read scripts
       if (config.scripts && Array.isArray(config.scripts)) {
-        copyScripts(config)
+        copyScripts(config.scripts)
       }
       fs.writeFile(
         path.resolve(__dirname, '../defaults/config.json'),
