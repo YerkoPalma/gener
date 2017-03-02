@@ -71,3 +71,4 @@ function buildConfig () {
 
 exports.buildConfig = buildConfig
 exports.buildLayout = buildLayout
+exports.copyScripts = copyScripts
