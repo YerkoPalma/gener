@@ -61,7 +61,9 @@ function buildPostsData () {
         }
         if (path.extname(post) === '.md') {
           obj[post] = marked(postContent, { renderer: renderer })
-          ws.write(stringifyProp(post, marked(postContent, { renderer: renderer })))
+          var tmpContent = marked(postContent, { renderer: renderer })
+          tmpContent = tmpContent.replace(/\n/g, '')
+          ws.write(stringifyProp(post, tmpContent))
         }
         if (Object.keys(obj).length === posts.length) {
           postsPaths.map(function (postPath, i) {
