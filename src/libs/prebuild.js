@@ -26,7 +26,7 @@ function buildLayout (layout, cb) {
   }
 }
 
-function copyScripts (scripts) {
+function copyScripts (scripts, cb) {
   assert.ok(Array.isArray(scripts))
 
   var src = global.source
@@ -39,9 +39,12 @@ function copyScripts (scripts) {
         .pipe(fs.createWriteStream(path.resolve(__dirname, '..', 'defaults', script)))
     }
   })
+  if (cb && typeof cb === 'function') cb()
 }
 
-function buildConfig () {
+function buildConfig (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildIndex
+  assert.equal(typeof cb, 'function')
   // create config file
   // in this case, a merge of options
   var userConfig = {}
@@ -69,11 +72,11 @@ function buildConfig () {
         path.resolve(__dirname, '../defaults/config.json'),
         JSON.stringify(config, null, 2),
         'utf8',
-        buildIndex
+        cb
       )
     })
   } else {
-    buildIndex()
+    cb()
   }
 }
 

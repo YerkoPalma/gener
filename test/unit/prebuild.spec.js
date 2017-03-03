@@ -1,5 +1,5 @@
 import test from 'ava'
-import { buildLayout, copyScripts } from '../../src/libs/prebuild'
+import { buildConfig, buildLayout, copyScripts } from '../../src/libs/prebuild'
 import fs from 'fs'
 import path from 'path'
 
@@ -8,10 +8,13 @@ test.cb.before(t => {
   buildLayout('layout', t.end)
 })
 
-test.after(t => {
+test.after.always(t => {
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'layout.hbs'))
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'foo.hbs'))
+  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz.hbs'))
+  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs'))
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js'))
+  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
 })
 
 test.cb('buildLayout should throw on invalid input', t => {
@@ -34,7 +37,50 @@ test('copyScripts should throw on invalid input', t => {
   t.notThrows(() => { copyScripts([]) })
 })
 
-test('should copy only the right scripts', t => {
-  copyScripts(['_server.js'])
-  t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js')))
+test.cb('should copy only the right scripts', t => {
+  copyScripts(['_server.js'], () => {
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js')))
+    t.end()
+  })
+})
+
+test('buildConfig argument must be undefined or a function, otherwise throw', t => {
+  t.throws(() => { buildConfig('') }, Error)
+  t.throws(() => { buildConfig({}) }, Error)
+  t.throws(() => { buildConfig([]) }, Error)
+})
+
+test.serial.cb('if layout is defined, should call "buildLayout"', t => {
+  // write in config.json
+  const tmp = {
+    layout: 'baz'
+  }
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+    if (err) {
+      console.error(err)
+      t.end()
+    }
+    buildConfig(() => {
+      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz.hbs')))
+      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs')))
+      t.end()
+    })
+  })
+})
+
+test.serial.cb('if scripts is defined, should call "copyScripts"', t => {
+  const tmp = {
+    scripts: ['test.js']
+  }
+  // write in config.json
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+    if (err) {
+      console.error(err)
+      t.end()
+    }
+    buildConfig(() => {
+      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js')))
+      t.end()
+    })
+  })
 })
