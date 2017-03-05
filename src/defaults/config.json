@@ -2,12 +2,12 @@
   "name": "Yerko Palma's Blog",
   "author": "Yerko Palma",
   "domain": "blog.yerkopalma.me",
-  "layout": "baz",
+  "layout": "default",
   "styles": [
     "https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css"
   ],
   "scripts": [
-    "test.js"
+    "script.js"
   ],
   "classes": {
     "p": "black-80 fw1 lh-copy georgia f4",
