@@ -3,10 +3,13 @@ var path = require('path')
 var config = require('../defaults/config.json')
 const Handlebars = require('handlebars')
 var minify = require('html-minifier').minify
+const assert = require('assert')
 const buildPostsData = require('./build-post').buildPostsData
 
-function buildIndex () {
-  console.log('building index...')
+function buildIndex (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildScripts
+  assert.equal(typeof cb, 'function')
+
   fs.readFile(path.resolve(__dirname, '..', 'defaults', '_index.hbs'), 'utf8', function (err, data) {
     if (err) throw err
 
@@ -20,13 +23,14 @@ function buildIndex () {
       dest,
       html,
       'utf8',
-      buildScripts
+      cb
     )
   })
 }
 
-function buildScripts () {
-  console.log('building scripts...')
+function buildScripts (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildPostsData
+  assert.equal(typeof cb, 'function')
 
   // read scripts
   if (config.scripts && Array.isArray(config.scripts)) {
@@ -37,7 +41,7 @@ function buildScripts () {
       path.resolve(__dirname, '..', 'defaults', '_scripts.js'),
       'module.exports = function () { \n' + scripts + '}',
       'utf8',
-      buildPostsData
+      cb
     )
   }
 }
