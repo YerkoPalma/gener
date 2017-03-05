@@ -3,8 +3,11 @@ import { buildConfig, buildLayout, copyScripts } from '../../src/libs/prebuild'
 import fs from 'fs'
 import path from 'path'
 
+let defaultConfig = {}
+
 test.cb.before(t => {
   global.source = 'test'
+  defaultConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json')))
   buildLayout('layout', t.end)
 })
 
@@ -15,6 +18,7 @@ test.after.always(t => {
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs'))
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js'))
   fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
+  fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
 })
 
 test.cb('buildLayout should throw on invalid input', t => {
