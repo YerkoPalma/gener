@@ -10,14 +10,15 @@ const layout = require('../defaults/config.json').layout
 const formatDate = require('../libs/helpers').formatDate
 var minify = require('html-minifier').minify
 const buildPostsViews = require('./build').buildPostsViews
+const assert = require('assert')
 
-function buildPostsData () {
-  console.log('building post-data...')
+function buildPostsData (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildPostsViews
+  assert.equal(typeof cb, 'function')
   // 0 Declare variables
   var viewFolder = path.resolve(__dirname, '../views')
   var datajs = path.resolve(__dirname, '../views/data.js')
   var postLayoutFile = path.resolve(__dirname, '../defaults/layouts', layout + '-post.hbs')
-  console.log('\npóst-layout: ' + postLayoutFile + '\n')
   var postsFolder = global.source
                     ? path.resolve(process.cwd(), global.source, 'posts')
                     : path.resolve(process.cwd(), 'posts')
@@ -26,32 +27,26 @@ function buildPostsData () {
   // 1 Create data.js
   if (!fs.existsSync(viewFolder)) fs.mkdirSync(viewFolder)
   fs.writeFileSync(datajs, '', 'utf8')
-  console.log('created ' + datajs)
   // 2 Read layouts
   const postLayout = fs.readFileSync(postLayoutFile, 'utf8')
-  console.log('readed ' + postLayoutFile)
   Handlebars.registerHelper('formatDate', formatDate)
   var template = Handlebars.compile(postLayout)
   // 3 Read posts
-  console.log('reading ' + postsFolder)
   fs.readdir(postsFolder, function (err, posts) {
     if (err) throw err
 
-    console.log('found ' + posts)
     // 4 Create streams
     var ws = fs.createWriteStream(datajs, { flags: 'r+' })
     ws.write('module.exports = {\n')
     var obj = {}
     var postsPaths = []
     posts.map(function (post, i) {
-      console.log('creating readstream on ' + postFile(post))
       var rs = fs.createReadStream(postFile(post), 'utf8')
       var postContent = ''
       rs.on('data', function (chunk) {
         postContent += chunk
       })
       rs.on('end', function () {
-        console.log('finished reading from ' + postFile(post))
         var tmpPath = '/' + post.split('.')[0]
         if (postsPaths.indexOf(tmpPath) === -1) postsPaths.push(tmpPath)
 
@@ -76,9 +71,9 @@ function buildPostsData () {
             })
             ws.write(',\n' + stringifyProp(postPath, content))
           })
-          ws.write('\n}')
+          ws.write('\n}', cb)
           // callback
-          buildPostsViews()
+          // cb()
         } else {
           ws.write(',\n')
         }
