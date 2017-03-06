@@ -4,7 +4,6 @@ const layout = require('../defaults/config.json').layout
 var minify = require('html-minifier').minify
 const buildBundle = require('./build-min').buildBundle
 const assert = require('assert')
-var postArray = []
 
 function buildPostsViews (cb) {
   cb = typeof cb !== 'undefined' ? cb : buildPostsMeta
@@ -40,14 +39,13 @@ function buildPostsViews (cb) {
 function buildPostsMeta (cb) {
   cb = typeof cb !== 'undefined' ? cb : buildBundle
   assert.equal(typeof cb, 'function')
+  var postArray = []
 
   const posts = require('../views/data.js')
   var postsClone = posts
 
   for (var prop in postsClone) {
-    if (prop.charAt(0) === '/' || path.extname(prop) === '.md') {
-      delete postsClone[prop]
-    } else {
+    if (path.extname(prop) === '.json') {
       var defaults = {
         slug: '/' + prop.split('.')[0],
         featuredImage: 'http://placehold.it/550x150',

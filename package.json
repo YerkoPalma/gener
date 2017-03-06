@@ -26,7 +26,7 @@
   },
   "repository": "YerkoPalma/gener",
   "scripts": {
-    "test": "standard --verbose | snazzy && nyc ava --verbose test/unit/ test/test.js",
+    "test": "standard --verbose | snazzy && nyc ava --verbose --serial test/unit/ test/test.js",
     "start": "budo bundle.js --port 8080 --host 0.0.0.0",
     "build": "npm run clear && node src/bin.js",
     "clear": "rm -rf index.html src/defaults/_scripts.js src/views/data.js src/views/data-posts.js src/views/meta.js bundle.js test/bundle.js test/index.html",

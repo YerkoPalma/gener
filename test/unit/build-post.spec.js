@@ -13,7 +13,9 @@ test.before(t => {
 test.after(t => {
   global.dist = undefined
   fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
+  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))) {
+    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
+  }
 })
 
 test.cb('buildPostsData should create data.js file in views folder', t => {
