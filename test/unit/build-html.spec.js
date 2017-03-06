@@ -14,8 +14,13 @@ test.before(t => {
 })
 
 test.after(t => {
+  var dest = global.dist
+              ? path.resolve(process.cwd(), global.dist, 'index.html')
+              : path.resolve(process.cwd(), 'index.html')
   global.dist = undefined
   fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
+  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
+  fs.unlink(dest)
 })
 
 test.cb('buildIndex should build index.html in dist directory', t => {
@@ -56,10 +61,8 @@ test('buildIndex and buildScript can only be functions or undefined', t => {
 
 test.cb('buildScripts should build scripts if there are in config', t => {
   buildScripts(() => {
+    const src = path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js')
+    t.truthy(fs.existsSync(src))
     t.end()
   })
-})
-
-test('buildScripts should build nothing if there is not in config', t => {
-
 })
