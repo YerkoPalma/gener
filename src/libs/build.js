@@ -3,10 +3,13 @@ var path = require('path')
 const layout = require('../defaults/config.json').layout
 var minify = require('html-minifier').minify
 const buildBundle = require('./build-min').buildBundle
+const assert = require('assert')
 var postArray = []
 
-function buildPostsViews () {
-  console.log('building posts-views...')
+function buildPostsViews (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildPostsMeta
+  assert.equal(typeof cb, 'function')
+
   var postsLayout = fs.readFileSync(path.resolve(__dirname, '../defaults/layouts', layout + '.hbs'), 'utf8')
   var from = postsLayout.indexOf('{{#each posts}}') + 15
   var to = postsLayout.lastIndexOf('{{/each}}')
@@ -30,13 +33,15 @@ function buildPostsViews () {
     path.resolve(__dirname, '../views/data-posts.js'),
     fn,
     'utf8',
-    buildPostsMeta
+    cb
   )
 }
 
-function buildPostsMeta () {
+function buildPostsMeta (cb) {
+  cb = typeof cb !== 'undefined' ? cb : buildBundle
+  assert.equal(typeof cb, 'function')
+
   const posts = require('../views/data.js')
-  console.log('building posts-meta')
   var postsClone = posts
 
   for (var prop in postsClone) {
@@ -58,7 +63,7 @@ function buildPostsMeta () {
     path.resolve(__dirname, '../views/meta.js'),
     metaPosts,
     'utf8',
-    buildBundle
+    cb
   )
 }
 
