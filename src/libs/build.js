@@ -46,11 +46,12 @@ function buildPostsMeta (cb) {
 
   for (var prop in postsClone) {
     if (path.extname(prop) === '.json') {
+      var tmpPost = JSON.parse(postsClone[prop])
       var defaults = {
         slug: '/' + prop.split('.')[0],
-        abstract: ''
+        abstract: tmpPost.subtitle || ''
       }
-      postArray.push(Object.assign(defaults, JSON.parse(postsClone[prop])))
+      postArray.push(Object.assign(defaults, tmpPost))
     }
   }
 

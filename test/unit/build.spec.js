@@ -56,6 +56,7 @@ test.cb('meta.js should have slug, featuredImage and featuredImageDescription', 
     meta.forEach(_meta => {
       t.true(_meta.hasOwnProperty('slug'))
       t.true(_meta.hasOwnProperty('abstract'))
+      t.is(_meta.abstract, _meta.subtitle)
       t.false(_meta.hasOwnProperty('featuredImage'))
       t.false(_meta.hasOwnProperty('featuredImageDescription'))
     })
