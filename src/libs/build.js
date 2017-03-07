@@ -48,8 +48,7 @@ function buildPostsMeta (cb) {
     if (path.extname(prop) === '.json') {
       var defaults = {
         slug: '/' + prop.split('.')[0],
-        featuredImage: 'http://placehold.it/550x150',
-        featuredImageDescription: ''
+        abstract: ''
       }
       postArray.push(Object.assign(defaults, JSON.parse(postsClone[prop])))
     }
