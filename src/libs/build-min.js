@@ -3,14 +3,19 @@ var path = require('path')
 var browserify = require('browserify')
 var uglifyify = require('uglifyify')
 
-function buildBundle () {
+function buildBundle (cb) {
   var dest = global.dist
               ? path.resolve(process.cwd(), global.dist, 'bundle.js')
               : path.resolve(process.cwd(), 'bundle.js')
-  browserify(path.resolve(__dirname, '../index.js'))
+  var rs = browserify(path.resolve(__dirname, '../index.js'))
     .transform(uglifyify)
     .bundle()
-    .pipe(fs.createWriteStream(dest))
+  // split the readeable stream to call the end event handler with a callback
+  // just for testing
+  if (cb && typeof cb === 'function') {
+    rs.on('end', cb)
+  }
+  rs.pipe(fs.createWriteStream(dest))
 }
 
 exports.buildBundle = buildBundle
