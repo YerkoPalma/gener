@@ -29,8 +29,8 @@ function buildIndex (cb) {
 }
 
 function buildScripts (cb) {
-  cb = typeof cb !== 'undefined' ? cb : buildPostsData
-  assert.equal(typeof cb, 'function')
+  cb = cb !== null ? cb : buildPostsData
+  assert.equal(typeof cb, 'function', 'Wooow' + JSON.stringify(cb))
 
   // read scripts
   if (config.scripts && Array.isArray(config.scripts)) {

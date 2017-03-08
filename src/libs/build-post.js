@@ -13,7 +13,7 @@ const buildPostsViews = require('./build').buildPostsViews
 const assert = require('assert')
 
 function buildPostsData (cb) {
-  cb = typeof cb !== 'undefined' ? cb : buildPostsViews
+  cb = cb !== null ? cb : buildPostsViews
   assert.equal(typeof cb, 'function')
   // 0 Declare variables
   var viewFolder = path.resolve(__dirname, '../views')

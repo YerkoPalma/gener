@@ -37,7 +37,7 @@ function buildPostsViews (cb) {
 }
 
 function buildPostsMeta (cb) {
-  cb = typeof cb !== 'undefined' ? cb : buildBundle
+  cb = cb !== null ? cb : buildBundle
   assert.equal(typeof cb, 'function')
   var postArray = []
 
