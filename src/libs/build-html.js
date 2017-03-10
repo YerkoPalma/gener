@@ -7,7 +7,7 @@ const assert = require('assert')
 const buildPostsData = require('./build-post').buildPostsData
 
 function buildIndex (cb) {
-  cb = typeof cb !== 'undefined' ? cb : buildScripts
+  cb = cb !== null ? cb : buildScripts
   assert.equal(typeof cb, 'function')
 
   fs.readFile(path.resolve(__dirname, '..', 'defaults', '_index.hbs'), 'utf8', function (err, data) {

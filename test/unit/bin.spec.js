@@ -7,6 +7,8 @@ const binPath = path.resolve(__dirname, '..', '..', 'src', 'bin.js')
 let defaultConfig = {}
 
 test.before(t => {
+  global.dist = undefined
+  global.source = undefined
   defaultConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json')))
 })
 
@@ -54,10 +56,17 @@ test('cli should show help with -h and --help flags', async t => {
     $ gener -s src -d dist`)
 })
 
-test('if dist folder doesn\'t exists, it must be created', async t => {
-  await execa('node', [binPath, '-d', 'dist'])
-  const distCreated = fs.existsSync(path.resolve(process.cwd(), 'dist'))
-  t.true(distCreated)
+test.cb('if dist folder doesn\'t exists, it must be created', t => {
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(defaultConfig, null, 2), err => {
+    if (err) {
+      console.error(err)
+      t.end()
+    }
+    execa.sync('node', [binPath, '-d', 'dist'], { cwd: path.resolve(__dirname, '..') })
+    const distCreated = fs.existsSync(path.resolve(process.cwd(), 'dist'))
+    t.true(distCreated)
+    t.end()
+  })
 })
 
 test.todo('if all goes well, should create index and bundle files')
