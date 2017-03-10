@@ -63,7 +63,7 @@ test.cb('if dist folder doesn\'t exists, it must be created', t => {
       t.end()
     }
     execa.sync('node', [binPath, '-d', 'dist'], { cwd: path.resolve(__dirname, '..') })
-    const distCreated = fs.existsSync(path.resolve(process.cwd(), 'dist'))
+    const distCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist'))
     t.true(distCreated)
     t.end()
   })

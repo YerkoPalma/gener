@@ -3,5 +3,4 @@ node_js:
   - 'stable'
   - '5'
   - '4'
-script: "sudo $(which npm) test"
 after_success: "npm i -g codecov && npm run coverage && codecov"
