@@ -2,7 +2,6 @@ import test from 'ava'
 import execa from 'execa'
 import path from 'path'
 import fs from 'fs'
-import http from 'http'
 
 const binPath = path.resolve(__dirname, '..', '..', 'src', 'bin.js')
 let defaultConfig = {}
@@ -66,27 +65,23 @@ test.cb('if dist folder doesn\'t exists, it must be created', t => {
     execa.sync('node', [binPath, '-d', 'dist'], { cwd: path.resolve(__dirname, '..') })
     const distCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist'))
     t.true(distCreated)
-    // if all goes well, should create index and bundle files
-    // const indexCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist', 'index.html'))
-    // const bundleCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist', 'bundle.js'))
-    // t.true(indexCreated)
-    // t.true(bundleCreated)
     t.end()
   })
 })
 
-test.cb('if dev flag is present, should start a local server', t => {
+test.cb('if all goes well, should create index and bundle files', t => {
   fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(defaultConfig, null, 2), err => {
     if (err) {
       console.error(err)
       t.end()
     }
-    execa('node', [binPath, '-d', 'dist', '--dev'], { cwd: path.resolve(__dirname, '..') }).then(() => {
+    execa('node', [binPath, '-d', 'dist'], { cwd: path.resolve(__dirname, '..') }).then(() => {
       // make some ping to localhost
-      http.get('http://localhost:8000', res => {
-        t.is(200, res.statusCode)
-        t.end()
-      })
+      const indexCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist', 'index.html'))
+      const bundleCreated = fs.existsSync(path.resolve(__dirname, '..', 'dist', 'bundle.js'))
+      t.true(indexCreated)
+      t.true(bundleCreated)
+      t.end()
     })
   })
 })

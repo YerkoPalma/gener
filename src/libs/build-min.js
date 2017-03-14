@@ -15,6 +15,11 @@ function buildBundle (cb) {
   if (cb && typeof cb === 'function') {
     rs.on('end', cb)
   }
+  // dev server called if there is the dev flag present
+  if (global.dev) {
+    const app = require('./server')
+    app.live()
+  }
   rs.pipe(fs.createWriteStream(dest))
 }
 

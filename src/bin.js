@@ -34,9 +34,11 @@ if (cli.flags['h'] || cli.flags['help']) {
 if (cli.input.length === 0) {
   var dist = cli.flags['d'] || cli.flags['dist'] || null
   var source = cli.flags['s'] || cli.flags['source'] || null
+  var dev = cli.flags['dev'] || false
   // make them global
   global.dist = dist
   global.source = source
+  global.dev = dev
   if (dist && !fs.existsSync(path.resolve(process.cwd(), global.dist))) {
     fs.mkdirSync(path.resolve(process.cwd(), global.dist))
   }
