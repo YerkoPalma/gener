@@ -9,7 +9,8 @@ var indexPath = global.dist
           ? path.resolve(process.cwd(), global.dist)
           : path.resolve(process.cwd())
 const app = budo(path.resolve(__dirname, '..', 'index.js'), {
-  port: 8000,
+  port: process.env.PORT || 8080,
+  host: process.env.IP || '0.0.0.0',
   serve: bundle,
   dir: indexPath
 })
@@ -19,4 +20,11 @@ var sourcePath = global.source
 app
   // watch source files
   .watch(sourcePath, { interval: 300, usePolling: true })
+  .on('watch', function (type, file) {
+    // tell LiveReload to inject some CSS
+    console.log(file + ' modified...')
+  })
+  .on('connect', function (event) {
+    console.log('Server running on ' + event.uri)
+  })
 module.exports = app
