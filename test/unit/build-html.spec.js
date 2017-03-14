@@ -54,7 +54,7 @@ test.cb('index.html should have properties from global config', t => {
 })
 
 test('buildIndex and buildScript can only be functions or undefined', t => {
-  t.throws(() => { buildIndex('') }, Error)
+  t.notThrows(() => { buildIndex('') })
   t.throws(() => { buildIndex({}) }, Error)
   t.throws(() => { buildIndex([]) }, Error)
 })

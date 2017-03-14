@@ -1,13 +1,22 @@
 const budo = require('budo')
 const path = require('path')
 
-var dest = global.dist
-            ? path.resolve(process.cwd(), global.dist)
-            : path.resolve(process.cwd())
-const app = budo(path.resolve(dest, 'bundle.js'), { port: 8000 })
+var bundle = global.dist
+          ? path.resolve(process.cwd(), global.dist, 'bundle.js')
+          : path.resolve(process.cwd(), 'bundle.js')
 
+var indexPath = global.dist
+          ? path.resolve(process.cwd(), global.dist)
+          : path.resolve(process.cwd())
+const app = budo(path.resolve(__dirname, '..', 'index.js'), {
+  port: 8000,
+  serve: bundle,
+  dir: indexPath
+})
+var sourcePath = global.source
+          ? path.resolve(process.cwd(), global.source)
+          : path.resolve(process.cwd())
 app
-  // listen to CSS file changes with some chokidar options
-  .watch(dest, { interval: 300, usePolling: true })
-
+  // watch source files
+  .watch(sourcePath, { interval: 300, usePolling: true })
 module.exports = app
