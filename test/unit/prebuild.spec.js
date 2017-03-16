@@ -2,23 +2,24 @@ import test from 'ava'
 import { buildConfig, buildLayout, copyScripts } from '../../src/libs/prebuild'
 import fs from 'fs'
 import path from 'path'
+import { tmpConfig, safeDelete } from '../utils'
 
 let defaultConfig = {}
 
 test.cb.before(t => {
   global.source = 'test'
-  defaultConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json')))
+  defaultConfig = tmpConfig()
   buildLayout('layout', t.end)
 })
 
 test.after.always(t => {
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'layout.hbs'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'foo.hbs'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz.hbs'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
-  fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'layout.hbs'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'foo.hbs'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz.hbs'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
+  defaultConfig.restore()
 })
 
 test.cb('buildLayout should throw on invalid input', t => {
@@ -42,8 +43,8 @@ test('copyScripts should throw on invalid input', t => {
 })
 
 test.cb('should copy only the right scripts', t => {
-  copyScripts(['_server.js'], () => {
-    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_server.js')))
+  copyScripts(['utils.js'], () => {
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js')))
     t.end()
   })
 })
@@ -74,7 +75,7 @@ test.serial.cb('if layout is defined, should call "buildLayout"', t => {
 
 test.serial.cb('if scripts is defined, should call "copyScripts"', t => {
   const tmp = {
-    scripts: ['test.js']
+    scripts: ['config.json']
   }
   // write in config.json
   fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
@@ -83,7 +84,7 @@ test.serial.cb('if scripts is defined, should call "copyScripts"', t => {
       t.end()
     }
     buildConfig(() => {
-      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js')))
+      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json')))
       t.end()
     })
   })

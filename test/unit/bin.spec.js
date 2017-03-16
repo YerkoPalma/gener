@@ -2,14 +2,14 @@ import test from 'ava'
 import execa from 'execa'
 import path from 'path'
 import fs from 'fs'
+import { tmpConfig, safeDelete } from '../utils'
 
 const binPath = path.resolve(__dirname, '..', '..', 'src', 'bin.js')
-let defaultConfig = {}
+let defaultConfig = tmpConfig()
 
 test.before(t => {
   global.dist = undefined
   global.source = undefined
-  defaultConfig = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json')))
 })
 
 test.after(t => {
@@ -21,21 +21,13 @@ test.after(t => {
               : path.resolve(process.cwd(), 'index.html')
   global.dist = undefined
   global.source = undefined
-  if (fs.existsSync(index)) fs.unlink(index)
-  if (fs.existsSync(bundle)) fs.unlink(bundle)
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
-  }
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
-  }
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
-  }
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
-  }
-  fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
+  safeDelete(index)
+  safeDelete(bundle)
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
+  defaultConfig.restore()
 })
 
 test('cli should show help with -h and --help flags', async t => {

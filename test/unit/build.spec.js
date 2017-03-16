@@ -1,6 +1,7 @@
 import test from 'ava'
 import { buildPostsViews, buildPostsMeta } from '../../src/libs/build'
 import { buildPostsData } from '../../src/libs/build-post'
+import { safeDelete } from '../utils'
 import fs from 'fs'
 import path from 'path'
 
@@ -14,11 +15,9 @@ test.cb.before(t => {
 
 test.after(t => {
   global.dist = undefined
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
-  }
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
 })
 
 test('buildPostsViews argument must be undefined or a function, otherwise throw', t => {

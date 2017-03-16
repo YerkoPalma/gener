@@ -102,9 +102,8 @@ function safeDelete (file) {
   }
 }
 
-function tmpConfig (src, data) {
-  const defaultConfig = backup(path.resolve('..', 'src', 'defaults', 'config.json'))
-  fs.writeFileSync(src, data)
+function tmpConfig () {
+  const defaultConfig = backup(path.resolve('src', 'defaults', 'config.json'))
   return defaultConfig
 }
 

@@ -3,6 +3,7 @@ import { buildIndex, buildScripts } from '../../src/libs/build-html'
 import fs from 'fs'
 import path from 'path'
 import cheerio from 'cheerio'
+import { tmpConfig, safeDelete } from '../utils'
 
 let config = {}
 let defaultConfig = {}
@@ -10,7 +11,7 @@ let defaultConfig = {}
 test.before(t => {
   global.dist = 'test'
   config = require('../../src/defaults/config.json')
-  defaultConfig = require('../../src/defaults/config.json')
+  defaultConfig = tmpConfig()
 })
 
 test.after(t => {
@@ -18,9 +19,9 @@ test.after(t => {
               ? path.resolve(process.cwd(), global.dist, 'index.html')
               : path.resolve(process.cwd(), 'index.html')
   global.dist = undefined
-  fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
-  fs.unlink(dest)
+  defaultConfig.restore()
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
+  safeDelete(dest)
 })
 
 test.cb('buildIndex should build index.html in dist directory', t => {

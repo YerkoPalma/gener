@@ -2,8 +2,9 @@ import test from 'ava'
 import { buildPostsData } from '../../src/libs/build-post'
 import fs from 'fs'
 import path from 'path'
-import config from '../../src/defaults/config.json'
-let defaultConfig = config
+import { tmpConfig, safeDelete } from '../utils'
+
+let defaultConfig = tmpConfig()
 
 test.before(t => {
   global.dist = 'test'
@@ -12,10 +13,8 @@ test.before(t => {
 
 test.after(t => {
   global.dist = undefined
-  fs.writeFileSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'config.json'), JSON.stringify(defaultConfig, null, 2))
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
-  }
+  defaultConfig.restore()
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
 })
 
 test.cb('buildPostsData should create data.js file in views folder', t => {

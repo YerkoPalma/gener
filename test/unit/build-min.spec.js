@@ -3,6 +3,7 @@ import { buildBundle } from '../../src/libs/build-min'
 import { buildIndex, buildScripts } from '../../src/libs/build-html'
 import { buildPostsData } from '../../src/libs/build-post'
 import { buildPostsViews, buildPostsMeta } from '../../src/libs/build'
+import { safeDelete } from '../utils'
 import fs from 'fs'
 import path from 'path'
 
@@ -20,14 +21,12 @@ test.after(t => {
               : path.resolve(process.cwd(), 'index.html')
   global.dist = undefined
   global.source = undefined
-  fs.unlink(index)
-  fs.unlink(bundle)
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
-  if (fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))) {
-    fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
-  }
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
-  fs.unlink(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
+  safeDelete(index)
+  safeDelete(bundle)
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
 })
 
 test.cb('buildBundle should create bundle.js file', t => {
