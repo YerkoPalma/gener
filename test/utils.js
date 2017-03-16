@@ -3,7 +3,7 @@ const path = require('path')
 
 // Synchronously backup a file to be restored later
 function backup (path) {
-  if(!fs.existsSync(path)) {
+  if (!fs.existsSync(path)) {
     console.log('Can\'t backup path ' + path + '\nnot a file')
   }
   return {
@@ -17,10 +17,10 @@ function backup (path) {
 
 // Synchronously copy a file or folder (recursively)
 function copy (from, to) {
-  if(!fs.existsSync(from)) {
+  if (!fs.existsSync(from)) {
     console.log('Can\'t copy from ' + from + '\nPath doesn\'t exists')
   }
-  if(!fs.existsSync(to)) {
+  if (!fs.existsSync(to)) {
     fs.mkdirSync(to)
   }
   const isDirectory = fs.statSync(from).isDirectory()
@@ -42,27 +42,25 @@ function copy (from, to) {
 
 // Asynchronously save a file or folder to later restore
 function snapshot (origin) {
-  if(!fs.existsSync(origin)) {
+  if (!fs.existsSync(origin)) {
     console.log('Can\'t make a snapshot for ' + origin + '\nPath doesn\'t exists')
   }
   // create simple struct to represent the file/folder
   var s = createStruct(origin)
-  console.log(JSON.stringify(s, null, 2))
+
   return {
     data: s,
     name: origin,
-    restore: function (src) {
+    restore: function (srcNode, src) {
       src = src || origin || '.'
-      if (this.data.type === 'dir') {
-        // mkdir(src)
-        // for (var child in children) {
-        //   this.restore(path.resolve(src, child))
-        // }
+      srcNode = srcNode || s
+      if (srcNode.type === 'dir') {
+        safeMkdir(src)
+        for (var child in srcNode.children) {
+          this.restore(srcNode.children[child], path.resolve(src, child))
+        }
       } else {
-        const data = src.split('/').reduce(function (_path) {
-          // traverse obj to get the file data
-        })
-        fs.writeFileSync(src, data.data)
+        fs.writeFileSync(src, srcNode.data)
       }
     }
   }
@@ -86,11 +84,33 @@ function snapshot (origin) {
         type: 'file',
         data: fs.readFileSync(origin, 'utf8')
       }
-      return obj[path] = fileStruct
+      obj[path] = fileStruct
+      return fileStruct
     }
   }
+}
+
+function safeMkdir (dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir)
+  }
+}
+
+function safeDelete (file) {
+  if (fs.existsSync(file)) {
+    fs.unlinkSync(file)
+  }
+}
+
+function tmpConfig (src, data) {
+  const defaultConfig = backup(path.resolve('..', 'src', 'defaults', 'config.json'))
+  fs.writeFileSync(src, data)
+  return defaultConfig
 }
 
 exports.backup = backup
 exports.copy = copy
 exports.snapshot = snapshot
+exports.safeMkdir = safeMkdir
+exports.safeDelete = safeDelete
+exports.tmpConfig = tmpConfig
