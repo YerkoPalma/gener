@@ -20,19 +20,15 @@ function copy (from, to) {
   if (!fs.existsSync(from)) {
     console.log('Can\'t copy from ' + from + '\nPath doesn\'t exists')
   }
-  if (!fs.existsSync(to)) {
+  const isDirectory = fs.statSync(from).isDirectory()
+  if (isDirectory && !fs.existsSync(to)) {
     fs.mkdirSync(to)
   }
-  const isDirectory = fs.statSync(from).isDirectory()
   if (isDirectory) {
     const files = fs.readdirSync(from)
     files.map((file) => {
       var filePath = path.resolve(from, file)
-      if (fs.statSync(filePath).isDirectory()) {
-        copy(filePath, path.resolve(to, file))
-      } else {
-        copy(file, to)
-      }
+      copy(filePath, path.resolve(to, file))
     })
   } else {
     const content = fs.readFileSync(from)

@@ -3,7 +3,7 @@ import { buildIndex, buildScripts } from '../../src/libs/build-html'
 import fs from 'fs'
 import path from 'path'
 import cheerio from 'cheerio'
-import { tmpConfig, safeDelete } from '../utils'
+import { tmpConfig, safeDelete, copy } from '../utils'
 
 let config = {}
 let defaultConfig = {}
@@ -12,6 +12,9 @@ test.before(t => {
   global.dist = 'test'
   config = require('../../src/defaults/config.json')
   defaultConfig = tmpConfig()
+  var from = path.resolve(__dirname, '..', 'posts')
+  var to = path.resolve(__dirname, '..', '..', 'posts')
+  copy(from, to)
 })
 
 test.after(t => {
