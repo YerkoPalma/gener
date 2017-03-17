@@ -1,5 +1,6 @@
 const budo = require('budo')
 const path = require('path')
+const buildConfig = require('./prebuild').buildConfig
 
 var bundle = global.dist
           ? path.resolve(process.cwd(), global.dist, 'bundle.js')
@@ -22,6 +23,8 @@ app
   .watch(sourcePath, { interval: 300, usePolling: true })
   .on('watch', function (type, file) {
     // tell LiveReload to inject some CSS
+    buildConfig()
+    app.reload()
     console.log(file + ' modified...')
   })
   .on('connect', function (event) {
