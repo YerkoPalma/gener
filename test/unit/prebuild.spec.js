@@ -1,5 +1,5 @@
 import test from 'ava'
-import { buildConfig, buildLayout, copyScripts } from '../../src/libs/prebuild'
+import { buildConfig, buildLayout, copyScripts, copyMedia } from '../../src/libs/prebuild'
 import fs from 'fs'
 import path from 'path'
 import { tmpConfig, safeDelete } from '../utils'
@@ -109,5 +109,13 @@ test.serial.cb('if styles are defined as local files, should copy the files', t 
       t.falsy(fs.existsSync('https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css'))
       t.end()
     })
+  })
+})
+
+test.serial.cb('should copy media folder', t => {
+  copyMedia(() => {
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media')))
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media', 'pic.png')))
+    t.end()
   })
 })

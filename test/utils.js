@@ -19,6 +19,7 @@ function backup (path) {
 function copy (from, to) {
   if (!fs.existsSync(from)) {
     console.log('Can\'t copy from ' + from + '\nPath doesn\'t exists')
+    return
   }
   const isDirectory = fs.statSync(from).isDirectory()
   if (isDirectory && !fs.existsSync(to)) {
@@ -94,7 +95,19 @@ function safeMkdir (dir) {
 
 function safeDelete (file) {
   if (fs.existsSync(file)) {
-    fs.unlinkSync(file)
+    if (fs.statSync(file).isFile()) {
+      fs.unlinkSync(file)
+    } else {
+      // is directory, check if is empty
+      const subfiles = fs.readdirSync(file)
+      if (subfiles.length === 0) {
+        fs.rmdirSync(file)
+      } else {
+        subfiles.map(function (subfile) {
+          safeDelete(path.resolve(file, subfile))
+        })
+      }
+    }
   }
 }
 

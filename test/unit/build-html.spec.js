@@ -24,6 +24,7 @@ test.after(t => {
   global.dist = undefined
   defaultConfig.restore()
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', '_scripts.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js'))
   safeDelete(dest)
 })
 

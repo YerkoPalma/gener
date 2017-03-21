@@ -42,6 +42,42 @@ function copyScripts (scripts, cb) {
   if (cb && typeof cb === 'function') cb()
 }
 
+function copyMedia (cb) {
+  var mediaFolder = global.source
+            ? path.resolve(process.cwd(), global.source)
+            : path.resolve(process.cwd())
+  mediaFolder = path.resolve(mediaFolder, 'posts', 'media')
+  if (fs.existsSync(mediaFolder)) {
+    var destiny = global.dist
+              ? path.resolve(process.cwd(), global.dist, 'media')
+              : path.resolve(process.cwd(), 'media')
+    copy(mediaFolder, destiny)
+  }
+  if (cb && typeof cb === 'function') cb()
+}
+
+// Synchronously copy a file or folder (recursively)
+function copy (from, to) {
+  if (!fs.existsSync(from)) {
+    console.log('Can\'t copy from ' + from + '\nPath doesn\'t exists')
+    return
+  }
+  const isDirectory = fs.statSync(from).isDirectory()
+  if (isDirectory && !fs.existsSync(to)) {
+    fs.mkdirSync(to)
+  }
+  if (isDirectory) {
+    const files = fs.readdirSync(from)
+    files.map((file) => {
+      var filePath = path.resolve(from, file)
+      copy(filePath, path.resolve(to, file))
+    })
+  } else {
+    const content = fs.readFileSync(from)
+    fs.writeFileSync(path.resolve(to, from), content)
+  }
+}
+
 function buildConfig (cb) {
   cb = typeof cb !== 'undefined' ? cb : buildIndex
   assert.equal(typeof cb, 'function')
@@ -87,3 +123,4 @@ function buildConfig (cb) {
 exports.buildConfig = buildConfig
 exports.buildLayout = buildLayout
 exports.copyScripts = copyScripts
+exports.copyMedia = copyMedia
