@@ -68,6 +68,10 @@ function buildConfig (cb) {
       if (config.scripts && Array.isArray(config.scripts)) {
         copyScripts(config.scripts)
       }
+      // same for styles
+      if (config.styles && Array.isArray(config.styles)) {
+        copyScripts(config.styles)
+      }
       fs.writeFile(
         path.resolve(__dirname, '../defaults/config.json'),
         JSON.stringify(config, null, 2),

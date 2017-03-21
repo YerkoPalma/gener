@@ -18,6 +18,7 @@ test.after.always(t => {
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz.hbs'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'layouts', 'baz-post.hbs'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'style.css'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
   defaultConfig.restore()
 })
