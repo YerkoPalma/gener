@@ -47,10 +47,11 @@ function copyMedia (cb) {
             ? path.resolve(process.cwd(), global.source)
             : path.resolve(process.cwd())
   mediaFolder = path.resolve(mediaFolder, 'posts', 'media')
+
   if (fs.existsSync(mediaFolder)) {
     var destiny = global.dist
-              ? path.resolve(process.cwd(), global.dist, 'media')
-              : path.resolve(process.cwd(), 'media')
+              ? path.resolve(process.cwd(), global.dist, 'src', 'media')
+              : path.resolve(process.cwd(), 'src', 'media')
     copy(mediaFolder, destiny)
   }
   if (cb && typeof cb === 'function') cb()
@@ -74,7 +75,7 @@ function copy (from, to) {
     })
   } else {
     const content = fs.readFileSync(from)
-    fs.writeFileSync(path.resolve(to, from), content)
+    fs.writeFileSync(to, content)
   }
 }
 
@@ -107,6 +108,10 @@ function buildConfig (cb) {
       // same for styles
       if (config.styles && Array.isArray(config.styles)) {
         copyScripts(config.styles)
+      }
+      // copy media
+      if (fs.existsSync(path.resolve(layoutSrc, '..', 'posts', 'media'))) {
+        copyMedia()
       }
       fs.writeFile(
         path.resolve(__dirname, '../defaults/config.json'),

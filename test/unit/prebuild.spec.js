@@ -20,6 +20,7 @@ test.after.always(t => {
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'style.css'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'media'))
   defaultConfig.restore()
 })
 
@@ -115,7 +116,7 @@ test.serial.cb('if styles are defined as local files, should copy the files', t 
 test.serial.cb('should copy media folder', t => {
   copyMedia(() => {
     t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media')))
-    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media', 'pic.png')))
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media', 'pic.jpg')))
     t.end()
   })
 })
