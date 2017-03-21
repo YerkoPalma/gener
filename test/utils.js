@@ -2,15 +2,15 @@ const fs = require('fs')
 const path = require('path')
 
 // Synchronously backup a file to be restored later
-function backup (path) {
-  if (!fs.existsSync(path)) {
-    console.log('Can\'t backup path ' + path + '\nnot a file')
+function backup (dir) {
+  if (!fs.existsSync(dir)) {
+    console.log('Can\'t backup path ' + dir + '\nnot a file')
   }
   return {
-    name: path,
-    content: fs.readFileSync(path),
+    name: dir,
+    content: fs.readFileSync(dir, 'utf8'),
     restore: function () {
-      fs.writeFileSync(this.name, this.content)
+      fs.writeFileSync(this.name, this.content, 'utf8')
     }
   }
 }

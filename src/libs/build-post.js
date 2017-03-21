@@ -34,7 +34,10 @@ function buildPostsData (cb) {
   // 3 Read posts
   fs.readdir(postsFolder, function (err, posts) {
     if (err) throw err
-
+    // filter posts to files only
+    posts = posts.filter(function (post) {
+      return fs.statSync(postFile(post)).isFile()
+    })
     // 4 Create streams
     var ws = fs.createWriteStream(datajs, { flags: 'r+' })
     ws.write('module.exports = {\n')

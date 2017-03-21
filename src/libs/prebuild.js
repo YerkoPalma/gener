@@ -50,8 +50,8 @@ function copyMedia (cb) {
 
   if (fs.existsSync(mediaFolder)) {
     var destiny = global.dist
-              ? path.resolve(process.cwd(), global.dist, 'src', 'media')
-              : path.resolve(process.cwd(), 'src', 'media')
+              ? path.resolve(process.cwd(), global.dist, 'media')
+              : path.resolve(process.cwd(), 'media')
     copy(mediaFolder, destiny)
   }
   if (cb && typeof cb === 'function') cb()

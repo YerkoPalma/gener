@@ -20,7 +20,7 @@ test.after.always(t => {
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'utils.js'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'style.css'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'test.js'))
-  safeDelete(path.resolve(__dirname, '..', '..', 'src', 'media'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'media'))
   defaultConfig.restore()
 })
 
@@ -62,7 +62,7 @@ test.serial.cb('if layout is defined, should call "buildLayout"', t => {
   const tmp = {
     layout: 'baz'
   }
-  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), 'utf8', err => {
     if (err) {
       console.error(err)
       t.end()
@@ -80,7 +80,7 @@ test.serial.cb('if scripts is defined, should call "copyScripts"', t => {
     scripts: ['config.json']
   }
   // write in config.json
-  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), 'utf8', err => {
     if (err) {
       console.error(err)
       t.end()
@@ -100,7 +100,7 @@ test.serial.cb('if styles are defined as local files, should copy the files', t 
     ]
   }
   // write in config.json
-  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), 'utf8', err => {
     if (err) {
       console.error(err)
       t.end()
@@ -115,8 +115,8 @@ test.serial.cb('if styles are defined as local files, should copy the files', t 
 
 test.serial.cb('should copy media folder', t => {
   copyMedia(() => {
-    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media')))
-    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'media', 'pic.jpg')))
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'media')))
+    t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'media', 'pic.jpg')))
     t.end()
   })
 })

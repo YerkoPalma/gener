@@ -27,6 +27,7 @@ test.after(t => {
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data.js'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'data-posts.js'))
   safeDelete(path.resolve(__dirname, '..', '..', 'src', 'views', 'meta.js'))
+  safeDelete(path.resolve(__dirname, '..', '..', 'media'))
   defaultConfig.restore()
 })
 
