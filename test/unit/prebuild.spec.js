@@ -89,3 +89,24 @@ test.serial.cb('if scripts is defined, should call "copyScripts"', t => {
     })
   })
 })
+
+test.serial.cb('if styles are defined as local files, should copy the files', t => {
+  const tmp = {
+    styles: [
+      'style.css',
+      'https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css'
+    ]
+  }
+  // write in config.json
+  fs.writeFile(path.resolve(__dirname, '..', 'config.json'), JSON.stringify(tmp, null, 2), err => {
+    if (err) {
+      console.error(err)
+      t.end()
+    }
+    buildConfig(() => {
+      t.truthy(fs.existsSync(path.resolve(__dirname, '..', '..', 'src', 'defaults', 'style.css')))
+      t.falsy(fs.existsSync('https://unpkg.com/tachyons@4.6.1/css/tachyons.min.css'))
+      t.end()
+    })
+  })
+})
